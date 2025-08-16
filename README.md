@@ -1,7 +1,5 @@
 # 🏨 Viyat Club - Luxury Resort Website
 
-![Project Screenshot](public/screenshot.png)
-
 A modern React + TypeScript implementation of a luxury resort website.
 
 ## 📌 Current Status
