@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FiMenu, FiX } from 'react-icons/fi'
-import CTAButton from './CTAButton'
-import useScrollDirection from '@hooks/useScrollDirection'
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMenu, FiX } from 'react-icons/fi';
+import CTAButton from './CTAButton';
+import useScrollDirection from '@hooks/useScrollDirection';
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const location = useLocation()
-  const scrollDirection = useScrollDirection()
-  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const scrollDirection = useScrollDirection();
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
-    setMobileMenuOpen(false)
-  }, [location])
+    setMobileMenuOpen(false);
+  }, [location]);
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -31,7 +31,7 @@ const Header = () => {
     { name: 'Events', path: '/events' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Membership', path: '/membership' },
-  ]
+  ];
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
@@ -114,7 +114,7 @@ const Header = () => {
         </AnimatePresence>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

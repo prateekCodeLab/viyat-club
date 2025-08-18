@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
 import CTAButton from '@components/CTAButton';
 import { FaStar, FaSwimmingPool, FaSpa, FaDumbbell, FaGlassCheers, FaConciergeBell, FaUserTie } from 'react-icons/fa';
 
 const Membership = () => {
+  const navigate = useNavigate();
+  const [loadingTier, setLoadingTier] = useState<string | null>(null);
+
   const membershipTiers = [
     {
       name: "Platinum",
@@ -91,6 +95,14 @@ const Membership = () => {
     "Access to our global reciprocal club network"
   ];
 
+  const handleJoinNow = (tierName: string) => {
+    setLoadingTier(tierName);
+    setTimeout(() => {
+      navigate('/signup', { state: { selectedTier: tierName } });
+      setLoadingTier(null);
+    }, 1000);
+  };
+
   return (
     <div className="bg-gray-50">
       <PageHeader
@@ -113,9 +125,9 @@ const Membership = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {membershipTiers.map((tier, index) => (
+            {membershipTiers.map((tier) => (
               <div
-                key={index}
+                key={tier.name}
                 className={`relative rounded-2xl overflow-hidden ${tier.popular ? "transform md:-translate-y-4 shadow-2xl" : "shadow-xl"} transition-all`}
               >
                 {tier.popular && (
@@ -123,7 +135,7 @@ const Membership = () => {
                     MOST POPULAR
                   </div>
                 )}
-                <div className={`p-8 h-full ${tier.popular ? "bg-white" : "bg-white"}`}>
+                <div className="p-8 h-full bg-white">
                   <h3 className="text-2xl font-bold text-viyat-navy mb-2">{tier.name}</h3>
                   <p className="text-3xl font-bold text-viyat-gold mb-4">{tier.price}</p>
                   <p className="text-gray-600 mb-6">{tier.description}</p>
@@ -137,8 +149,16 @@ const Membership = () => {
                     ))}
                   </ul>
 
-                  <button className={`w-full py-3 rounded-lg font-medium transition-colors ${tier.popular ? "bg-viyat-gold hover:bg-viyat-navy text-white" : "bg-white border-2 border-viyat-gold text-viyat-gold hover:bg-viyat-gold/10"}`}>
-                    Join Now
+                  <button
+                    onClick={() => handleJoinNow(tier.name)}
+                    disabled={!!loadingTier}
+                    className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                      tier.popular 
+                        ? "bg-viyat-gold hover:bg-viyat-navy text-white" 
+                        : "bg-white border-2 border-viyat-gold text-viyat-gold hover:bg-viyat-gold/10"
+                    } ${loadingTier ? "opacity-70 cursor-not-allowed" : ""}`}
+                  >
+                    {loadingTier === tier.name ? "Processing..." : "Join Now"}
                   </button>
                 </div>
               </div>
@@ -201,7 +221,7 @@ const Membership = () => {
               />
               <CTAButton
                 text="Download Brochure"
-                to="#"
+                to="/assets/brochure.pdf"
                 variant="secondary"
                 size="lg"
               />
