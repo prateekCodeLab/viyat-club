@@ -1,14 +1,14 @@
-import React, { Component, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 interface State {
-  hasError: boolean;
-  error: Error | null;
-  errorInfo: React.ErrorInfo | null;
+  hasError: boolean
+  error: Error | null
+  errorInfo: React.ErrorInfo | null
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -16,15 +16,15 @@ class ErrorBoundary extends Component<Props, State> {
     hasError: false,
     error: null,
     errorInfo: null
-  };
+  }
 
   public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error, errorInfo: null };
+    return { hasError: true, error, errorInfo: null }
   }
 
   public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
-    this.setState({ errorInfo });
+    console.error("Uncaught error:", error, errorInfo)
+    this.setState({ errorInfo })
   }
 
   public render() {
@@ -58,11 +58,11 @@ class ErrorBoundary extends Component<Props, State> {
             </div>
           </div>
         </div>
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary

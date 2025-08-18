@@ -1,10 +1,11 @@
-import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import ErrorBoundary from './ErrorBoundary';
+import React from 'react'
+import Header from './Header'
+import Footer from './Footer'
+import ErrorBoundary from './ErrorBoundary'
+import { Toaster } from 'react-hot-toast'
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
@@ -17,8 +18,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </ErrorBoundary>
       </main>
       <Footer />
+      <Toaster position="bottom-right" />
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

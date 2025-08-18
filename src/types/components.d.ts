@@ -1,9 +1,15 @@
+// src/types/components.d.ts
+import { ReactNode } from 'react';
+
 declare module '@components/*'
 
 interface HeroProps {
-  title: string
-  subtitle: string
-  image: string
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  ctaText?: string;
+  ctaLink?: string;
+  overlay?: boolean;
 }
 
 interface GalleryItem {
@@ -13,7 +19,10 @@ interface GalleryItem {
 }
 
 interface Testimonial {
-  quote: string
-  author: string
-  role: string
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+  image: string;
 }

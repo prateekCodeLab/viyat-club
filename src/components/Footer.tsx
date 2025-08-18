@@ -1,9 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
-import CTAButton from './CTAButton';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { 
+  FaFacebook, FaInstagram, FaTwitter, FaLinkedin, 
+  FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock 
+} from 'react-icons/fa'
+import CTAButton from './CTAButton'
+import NewsletterForm from './NewsletterForm'
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-viyat-navy text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -11,96 +17,116 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-bold mb-6">Viyat Club</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              North India's premier luxury destination offering world-class amenities, exquisite dining, and unforgettable experiences.
+              North India's premier luxury destination offering world-class amenities, 
+              exquisite dining, and unforgettable experiences.
             </p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com/viyatclub" className="text-gray-300 hover:text-viyat-gold transition-colors" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={20} />
-              </a>
-              <a href="https://instagram.com/viyatclub" className="text-gray-300 hover:text-viyat-gold transition-colors" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={20} />
-              </a>
-              <a href="https://twitter.com/viyatclub" className="text-gray-300 hover:text-viyat-gold transition-colors" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={20} />
-              </a>
-              <a href="https://linkedin.com/company/viyatclub" className="text-gray-300 hover:text-viyat-gold transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={20} />
-              </a>
+              <SocialIcon 
+                href="https://facebook.com/viyatclub" 
+                icon={<FaFacebook />} 
+                label="Facebook"
+              />
+              <SocialIcon 
+                href="https://instagram.com/viyatclub" 
+                icon={<FaInstagram />} 
+                label="Instagram"
+              />
+              <SocialIcon 
+                href="https://twitter.com/viyatclub" 
+                icon={<FaTwitter />} 
+                label="Twitter"
+              />
+              <SocialIcon 
+                href="https://linkedin.com/company/viyatclub" 
+                icon={<FaLinkedin />} 
+                label="LinkedIn"
+              />
             </div>
           </div>
 
           <div>
             <h3 className="text-xl font-bold mb-6">Explore</h3>
             <ul className="space-y-3">
-              <li><Link to="/" className="text-gray-300 hover:text-viyat-gold transition-colors">Home</Link></li>
-              <li><Link to="/accommodation" className="text-gray-300 hover:text-viyat-gold transition-colors">Accommodation</Link></li>
-              <li><Link to="/weddings" className="text-gray-300 hover:text-viyat-gold transition-colors">Weddings</Link></li>
-              <li><Link to="/events" className="text-gray-300 hover:text-viyat-gold transition-colors">Events</Link></li>
-              <li><Link to="/gallery" className="text-gray-300 hover:text-viyat-gold transition-colors">Gallery</Link></li>
-              <li><Link to="/membership" className="text-gray-300 hover:text-viyat-gold transition-colors">Membership</Link></li>
+              <FooterLink to="/" text="Home" />
+              <FooterLink to="/accommodation" text="Accommodation" />
+              <FooterLink to="/weddings" text="Weddings" />
+              <FooterLink to="/events" text="Events" />
+              <FooterLink to="/gallery" text="Gallery" />
+              <FooterLink to="/membership" text="Membership" />
             </ul>
           </div>
 
           <div>
             <h3 className="text-xl font-bold mb-6">Contact Us</h3>
             <address className="not-italic text-gray-300 space-y-4">
-              <div className="flex items-start gap-4">
-                <FaMapMarkerAlt className="mt-1 text-viyat-gold" />
-                <span>Sector Omega I, Greater Noida, Uttar Pradesh 201310</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <FaPhone className="text-viyat-gold" />
-                <span>+91 98765 43210</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <FaEnvelope className="text-viyat-gold" />
-                <span>info@viyatclub.com</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <FaClock className="text-viyat-gold" />
-                <span>Open daily: 6:00 AM - 11:00 PM</span>
-              </div>
+              <ContactInfo 
+                icon={<FaMapMarkerAlt className="text-viyat-gold" />} 
+                text="Sector Omega I, Greater Noida, Uttar Pradesh 201310"
+              />
+              <ContactInfo 
+                icon={<FaPhone className="text-viyat-gold" />} 
+                text="+91 98765 43210"
+              />
+              <ContactInfo 
+                icon={<FaEnvelope className="text-viyat-gold" />} 
+                text="info@viyatclub.com"
+              />
+              <ContactInfo 
+                icon={<FaClock className="text-viyat-gold" />} 
+                text="Open daily: 6:00 AM - 11:00 PM"
+              />
             </address>
           </div>
 
           <div>
             <h3 className="text-xl font-bold mb-6">Stay Updated</h3>
-            <p className="text-gray-300 mb-6">
-              Subscribe to our newsletter for exclusive offers and updates.
-            </p>
-            <form className="space-y-4">
-              <input
-                type="email"
-                id="newsletter-email"
-                name="email"
-                autoComplete="email"
-                placeholder="Your email address"
-                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-viyat-gold text-gray-800"
-                required
-              />
-              <CTAButton
-                text="Subscribe"
-                type="submit"
-                variant="gold-outline"
-                size="full"
-              />
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 mb-4 md:mb-0">
-            © {new Date().getFullYear()} Viyat Club. All rights reserved.
+            © {currentYear} Viyat Club. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <Link to="/privacy" className="text-gray-400 hover:text-viyat-gold transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="text-gray-400 hover:text-viyat-gold transition-colors">Terms of Service</Link>
-            <Link to="/sitemap" className="text-gray-400 hover:text-viyat-gold transition-colors">Sitemap</Link>
+            <FooterLink to="/privacy" text="Privacy Policy" small />
+            <FooterLink to="/terms" text="Terms of Service" small />
+            <FooterLink to="/sitemap" text="Sitemap" small />
           </div>
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+const SocialIcon = ({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) => (
+  <a 
+    href={href} 
+    className="text-gray-300 hover:text-viyat-gold transition-colors" 
+    aria-label={label}
+    target="_blank" 
+    rel="noopener noreferrer"
+  >
+    {icon}
+  </a>
+)
+
+const FooterLink = ({ to, text, small = false }: { to: string, text: string, small?: boolean }) => (
+  <li>
+    <Link 
+      to={to} 
+      className={`${small ? 'text-gray-400' : 'text-gray-300'} hover:text-viyat-gold transition-colors`}
+    >
+      {text}
+    </Link>
+  </li>
+)
+
+const ContactInfo = ({ icon, text }: { icon: React.ReactNode, text: string }) => (
+  <div className="flex items-start gap-4">
+    <span className="mt-1">{icon}</span>
+    <span>{text}</span>
+  </div>
+)
+
+export default Footer
