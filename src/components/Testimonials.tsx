@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaQuoteLeft, FaStar } from 'react-icons/fa';
 import SectionHeader from './SectionHeader';
@@ -13,6 +13,7 @@ interface Testimonial {
 }
 
 const Testimonials = () => {
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const testimonials: Testimonial[] = [
     {
       id: 1,
@@ -101,10 +102,68 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <button className="px-8 py-3 bg-viyat-navy text-white rounded-lg hover:bg-viyat-navy/90 transition-colors font-medium">
+          <button 
+            onClick={() => setShowFeedbackModal(true)}
+            className="px-8 py-3 bg-viyat-navy text-white rounded-lg hover:bg-viyat-navy/90 transition-colors font-medium"
+          >
             Share Your Experience
           </button>
         </motion.div>
+
+          {/* Feedback Modal (matches existing design) */}
+        {showFeedbackModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+              <h3 className="text-2xl font-bold text-viyat-navy mb-6">Share Your Feedback</h3>
+              
+              <form className="space-y-4">
+                <div>
+                  <label className="block text-gray-700 mb-2">Your Name</label>
+                  <input 
+                    type="text" 
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-viyat-gold focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 mb-2">Your Experience</label>
+                  <textarea 
+                    rows={4}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-viyat-gold focus:border-transparent"
+                  ></textarea>
+                </div>
+                
+                <div className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    id="consent"
+                    className="mr-2 h-5 w-5 text-viyat-gold rounded focus:ring-viyat-gold"
+                  />
+                  <label htmlFor="consent" className="text-gray-700">
+                    I agree to share my feedback publicly
+                  </label>
+                </div>
+                
+                <div className="flex justify-end gap-4 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowFeedbackModal(false)}
+                    className="px-6 py-2 border border-viyat-navy text-viyat-navy rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-viyat-gold text-viyat-navy rounded-lg hover:bg-viyat-gold/90 transition-colors font-medium"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   );
