@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
+import CTAButton from '@components/CTAButton';
 import { FiWifi, FiCoffee, FiDroplet, FiTv, FiMapPin, FiStar, FiZap } from 'react-icons/fi';
 
+interface RoomType {
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+  amenities: string[];
+}
+
+interface PackageType {
+  name: string;
+  price: string;
+  includes: string[];
+  image?: string;
+}
+
 const Accommodation = () => {
+  const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showPackagesModal, setShowPackagesModal] = useState(false);
+  const [bookingDates, setBookingDates] = useState({
+    checkIn: '',
+    checkOut: '',
+    guests: 1
+  });
+
   const roomTypes = [
     {
       name: "Deluxe Room",
@@ -28,6 +53,49 @@ const Accommodation = () => {
     }
   ];
 
+  const packages = [
+    {
+      name: "Spa Retreat Package",
+      price: "₹18,000/night",
+      includes: [
+        "Luxury accommodation",
+        "60-minute spa treatment",
+        "Daily yoga session",
+        "Healthy breakfast"
+      ]
+    },
+    {
+      name: "Romantic Getaway Package",
+      price: "₹22,000/night",
+      includes: [
+        "Champagne on arrival",
+        "Couples massage",
+        "Candlelit dinner",
+        "Late checkout"
+      ]
+    },
+    {
+      name: "Business Traveler Package",
+      price: "₹20,000/night",
+      includes: [
+        "Executive lounge access",
+        "Daily laundry service",
+        "Airport transfers",
+        "Meeting room credits"
+      ]
+    },
+    {
+      name: "Family Vacation Package",
+      price: "₹25,000/night",
+      includes: [
+        "Connecting rooms available",
+        "Kids activities",
+        "Family dinner credit",
+        "Complimentary babysitting"
+      ]
+    }
+  ];
+
   const highlights = [
     {
       icon: <FiStar className="text-3xl text-viyat-gold" />,
@@ -45,6 +113,20 @@ const Accommodation = () => {
       description: "24/7 concierge to attend to your every need"
     }
   ];
+
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Booking submitted:', selectedRoom, bookingDates);
+    setShowBookingModal(false);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setBookingDates(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   return (
     <div>
@@ -101,9 +183,15 @@ const Accommodation = () => {
                   </div>
 
                   <p className="text-2xl font-bold text-viyat-gold mb-6">{room.price}</p>
-                  <button className="w-full py-3 bg-viyat-gold hover:bg-viyat-navy text-white rounded-md transition-colors font-medium">
-                    Book Now
-                  </button>
+                  <CTAButton
+                    text="Book Now"
+                    onClick={() => {
+                      setSelectedRoom(room);
+                      setShowBookingModal(true);
+                    }}
+                    variant="primary"
+                    size="full"
+                  />
                 </div>
               </div>
             ))}
@@ -129,26 +217,19 @@ const Accommodation = () => {
                   Enhance your stay with our curated packages that combine luxury accommodations with exceptional experiences.
                 </p>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-start">
-                    <span className="text-viyat-gold mr-3">✓</span>
-                    <span className="font-medium">Spa Retreat Package</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-viyat-gold mr-3">✓</span>
-                    <span className="font-medium">Romantic Getaway Package</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-viyat-gold mr-3">✓</span>
-                    <span className="font-medium">Business Traveler Package</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-viyat-gold mr-3">✓</span>
-                    <span className="font-medium">Family Vacation Package</span>
-                  </li>
+                  {packages.slice(0, 4).map((pkg, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-viyat-gold mr-3">✓</span>
+                      <span className="font-medium">{pkg.name}</span>
+                    </li>
+                  ))}
                 </ul>
-                <button className="px-8 py-3 border-2 border-viyat-navy text-viyat-navy hover:bg-viyat-navy hover:text-white rounded-md transition-colors font-medium">
-                  View All Packages
-                </button>
+                <CTAButton
+                  text="View All Packages"
+                  onClick={() => setShowPackagesModal(true)}
+                  variant="outline"
+                  className="border-2 border-viyat-navy text-viyat-navy hover:bg-viyat-navy hover:text-white"
+                />
               </div>
               <div className="rounded-xl overflow-hidden h-80">
                 <img
@@ -162,6 +243,121 @@ const Accommodation = () => {
           </div>
         </div>
       </section>
+
+      {/* Packages Modal */}
+      {showPackagesModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-8 rounded-2xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-3xl font-bold text-viyat-navy mb-8 text-center">
+              Our Special Packages
+            </h3>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {packages.map((pkg, index) => (
+                <div key={index} className="border border-viyat-champagne rounded-xl p-6 hover:shadow-md transition-all">
+                  <h4 className="text-xl font-bold text-viyat-navy mb-3">{pkg.name}</h4>
+                  <p className="text-viyat-gold font-medium mb-4">{pkg.price}</p>
+                  <ul className="space-y-2 mb-6">
+                    {pkg.includes.map((item, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="text-viyat-gold mr-2">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <CTAButton
+                    text="Book This Package"
+                    onClick={() => {
+                      setShowPackagesModal(false);
+                      // Optional: Auto-scroll to booking section
+                    }}
+                    variant="primary"
+                    size="full"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <CTAButton
+                text="Close"
+                onClick={() => setShowPackagesModal(false)}
+                variant="outline"
+                className="border border-viyat-navy text-viyat-navy hover:bg-gray-100"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && selectedRoom && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+            <h3 className="text-2xl font-bold text-viyat-navy mb-2">
+              Book {selectedRoom.name}
+            </h3>
+            <p className="text-viyat-gold font-medium mb-6">{selectedRoom.price}</p>
+            
+            <form onSubmit={handleBookingSubmit}>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Check-in</label>
+                  <input
+                    type="date"
+                    name="checkIn"
+                    value={bookingDates.checkIn}
+                    onChange={handleDateChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-viyat-gold focus:border-transparent"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Check-out</label>
+                  <input
+                    type="date"
+                    name="checkOut"
+                    value={bookingDates.checkOut}
+                    onChange={handleDateChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-viyat-gold focus:border-transparent"
+                    required
+                    min={bookingDates.checkIn || new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-gray-700 text-sm font-medium mb-1">Guests</label>
+                <select
+                  name="guests"
+                  value={bookingDates.guests}
+                  onChange={handleDateChange}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-viyat-gold focus:border-transparent"
+                >
+                  {[1, 2, 3, 4].map(num => (
+                    <option key={num} value={num}>{num} {num === 1 ? 'guest' : 'guests'}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-4">
+                <CTAButton
+                  text="Cancel"
+                  onClick={() => setShowBookingModal(false)}
+                  variant="outline"
+                  className="border border-viyat-navy text-viyat-navy hover:bg-gray-100"
+                />
+                <CTAButton
+                  text="Confirm Booking"
+                  type="submit"
+                  variant="primary"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
