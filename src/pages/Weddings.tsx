@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
 import CTAButton from '@components/CTAButton';
-import { FaRing, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaGlassCheers, FaUmbrellaBeach } from 'react-icons/fa';
+import BrochureModal from '@components/BrochureModal';
+import { FaRing, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaGlassCheers, FaUmbrellaBeach, FaDownload } from 'react-icons/fa';
 
 const Weddings = () => {
+  const [selectedPackage, setSelectedPackage] = useState<{ id: number; title: string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const weddingPackages = [
     {
       id: 1,
@@ -97,6 +101,16 @@ const Weddings = () => {
     }
   ];
 
+  const handleBrochureRequest = (pkgId: number, pkgTitle: string) => {
+    setSelectedPackage({ id: pkgId, title: pkgTitle });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPackage(null);
+  };
+
   return (
     <div className="bg-gray-50">
       <PageHeader
@@ -152,9 +166,13 @@ const Weddings = () => {
                     </ul>
                   </div>
 
-                  <button className="w-full py-3 bg-viyat-gold hover:bg-viyat-navy text-white rounded-lg transition-colors font-medium">
-                    Request Brochure
-                  </button>
+                  <CTAButton
+                    text="Request Brochure"
+                    size="full"
+                    variant="primary"
+                    onClick={() => handleBrochureRequest(pkg.id, pkg.title)}
+                    icon={<FaDownload />}
+                  />
                 </div>
               </div>
             ))}
@@ -226,6 +244,16 @@ const Weddings = () => {
                 Contact Wedding Planner
               </button>
             </div>
+
+              {selectedPackage && (
+            <BrochureModal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              packageTitle={selectedPackage.title}
+              packageId={selectedPackage.id}
+            />
+          )}
+
           </div>
         </div>
       </section>
