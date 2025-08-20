@@ -3,11 +3,14 @@ import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
 import CTAButton from '@components/CTAButton';
 import BrochureModal from '@components/BrochureModal';
-import { FaRing, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaGlassCheers, FaUmbrellaBeach, FaDownload } from 'react-icons/fa';
+import ContactModal from '@components/ContactModal';
+import { FaRing, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaGlassCheers, FaUmbrellaBeach, FaDownload, FaCalendar, FaUser } from 'react-icons/fa';
 
 const Weddings = () => {
   const [selectedPackage, setSelectedPackage] = useState<{ id: number; title: string } | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'venue-tour' | 'wedding-planner'>('venue-tour');
 
   const weddingPackages = [
     {
@@ -103,11 +106,22 @@ const Weddings = () => {
 
   const handleBrochureRequest = (pkgId: number, pkgTitle: string) => {
     setSelectedPackage({ id: pkgId, title: pkgTitle });
-    setIsModalOpen(true);
+    setIsBrochureModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleVenueTour = () => {
+    setModalType('venue-tour');
+    setIsContactModalOpen(true);
+  };
+
+  const handleWeddingPlanner = () => {
+    setModalType('wedding-planner');
+    setIsContactModalOpen(true);
+  };
+
+  const closeModals = () => {
+    setIsBrochureModalOpen(false);
+    setIsContactModalOpen(false);
     setSelectedPackage(null);
   };
 
@@ -237,22 +251,36 @@ const Weddings = () => {
               Schedule a consultation with our wedding specialists to start planning your perfect day.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button className="px-8 py-4 bg-viyat-gold hover:bg-viyat-navy text-white rounded-lg transition-colors font-medium">
-                Book a Venue Tour
-              </button>
-              <button className="px-8 py-4 border border-viyat-navy text-viyat-navy hover:bg-gray-100 rounded-lg transition-colors font-medium">
-                Contact Wedding Planner
-              </button>
+              <CTAButton
+                text="Book a Venue Tour"
+                size="lg"
+                variant="primary"
+                onClick={handleVenueTour}
+                icon={<FaCalendar />}
+              />
+              <CTAButton
+                text="Contact Wedding Planner"
+                size="lg"
+                variant="outline"
+                onClick={handleWeddingPlanner}
+                icon={<FaUser />}
+              />
             </div>
 
               {selectedPackage && (
             <BrochureModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
+              isOpen={isBrochureModalOpen}
+              onClose={closeModals}
               packageTitle={selectedPackage.title}
               packageId={selectedPackage.id}
             />
           )}
+
+          <ContactModal
+            isOpen={isContactModalOpen}
+            onClose={closeModals}
+            modalType={modalType}
+          />
 
           </div>
         </div>
