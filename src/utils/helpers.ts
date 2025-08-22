@@ -27,3 +27,20 @@ export const truncateText = (text: string, maxLength: number): string => {
     ? `${text.substring(0, maxLength)}...` 
     : text
 }
+
+// src/utils/helpers.ts - Add this function to the existing file
+
+export const submitRSVP = async (rsvpData: any): Promise<Response> => {
+  // In a real application, this would be your API endpoint
+  // For now, we'll simulate an API call
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simulate successful submission 90% of the time
+      if (Math.random() > 0.1) {
+        resolve(new Response(JSON.stringify({ success: true }), { status: 200 }));
+      } else {
+        reject(new Error('Failed to submit RSVP'));
+      }
+    }, 1500);
+  });
+};

@@ -57,3 +57,46 @@ export interface RoomType {
   image: string
   amenities: string[]
 }
+
+// RSVP Types
+export interface RSVPData {
+  eventId: number;
+  name: string;
+  email: string;
+  phone: string;
+  attendees: number;
+  dietaryPreferences?: string;
+  message?: string;
+}
+
+export interface Event {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+  image: string;
+  category: string;
+  rsvpCount?: number;
+  capacity?: number;
+}
+
+// Event Details Types
+export interface EventDetails {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+  image: string;
+  category: string;
+  capacity: number;
+  location: string;
+  dressCode?: string;
+  price?: string;
+  included?: string[];
+  additionalInfo?: string;
+  contactPerson?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+}
