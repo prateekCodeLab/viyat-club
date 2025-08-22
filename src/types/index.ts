@@ -100,3 +100,24 @@ export interface EventDetails {
   contactEmail?: string;
   contactPhone?: string;
 }
+
+// Venue Enquiry Types
+export interface VenueEnquiryData {
+  name: string;
+  email: string;
+  phone: string;
+  eventType: string;
+  eventDate: string;
+  estimatedGuests: number;
+  message: string;
+}
+
+export interface FloorPlan {
+  id: number;
+  name: string;
+  capacity: string;
+  area: string;
+  image: string;
+  description: string;
+  features: string[];
+}

@@ -44,3 +44,19 @@ export const submitRSVP = async (rsvpData: any): Promise<Response> => {
     }, 1500);
   });
 };
+
+// src/utils/helpers.ts - Add this function to the existing file
+
+export const submitVenueEnquiry = async (enquiryData: any): Promise<Response> => {
+  // In a real application, this would be your API endpoint
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simulate successful submission 90% of the time
+      if (Math.random() > 0.1) {
+        resolve(new Response(JSON.stringify({ success: true }), { status: 200 }));
+      } else {
+        reject(new Error('Failed to submit enquiry'));
+      }
+    }, 1500);
+  });
+};

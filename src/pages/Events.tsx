@@ -4,16 +4,21 @@ import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
 import RSVPModal from '@components/RSVPModal';
 import EventDetailsModal from '@components/EventDetailsModal';
+import VenueEnquiryModal from '@components/VenueEnquiryModal';
+import FloorPlansModal from '@components/FloorPlansModal';
 import { FaCalendarAlt, FaMusic, FaGlassCheers, FaUtensils, FaTheaterMasks, FaMicrophone } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
-import { submitRSVP } from '@utils/helpers';
+import { submitRSVP, submitVenueEnquiry } from '@utils/helpers';
 import { RSVPData } from '../types';
 
 const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isVenueEnquiryModalOpen, setIsVenueEnquiryModalOpen] = useState(false);
+  const [isFloorPlansModalOpen, setIsFloorPlansModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnquirySubmitting, setIsEnquirySubmitting] = useState(false);
   const [rsvpCounts, setRsvpCounts] = useState<Record<number, number>>({
     1: 32,
     2: 28,
@@ -43,8 +48,8 @@ const Events = () => {
       ],
       additionalInfo: "This event is weather permitting. In case of rain, the event will be moved to our indoor ballroom.",
       contactPerson: "Prateek Kumar",
-      contactEmail: "prateek.kumar@viyatclub.com",
-      contactPhone: "+91 9220303151"
+      contactEmail: "pkmr3432@viyatclub.com",
+      contactPhone: "+91 92203 03151"
     },
     {
       id: 2,
@@ -164,6 +169,24 @@ const Events = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleVenueEnquiry = async (enquiryData: any) => {
+    setIsEnquirySubmitting(true);
+    try {
+      await submitVenueEnquiry(enquiryData);
+      toast.success('Thank you for your enquiry! Our events team will contact you within 24 hours.');
+      setIsVenueEnquiryModalOpen(false);
+    } catch (error) {
+      console.error('Error submitting enquiry:', error);
+      toast.error('There was an error submitting your enquiry. Please try again.');
+    } finally {
+      setIsEnquirySubmitting(false);
+    }
+  };
+
+  const handleViewFloorPlans = () => {
+    setIsFloorPlansModalOpen(true);
   };
 
   const isEventFull = (event: any) => {
@@ -297,10 +320,16 @@ const Events = () => {
                 Our elegant venues and expert event planners can bring your vision to life, whether it's a milestone celebration, corporate gathering, or social soirée.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <button className="px-8 py-3 bg-viyat-gold hover:bg-white text-viyat-navy rounded-md transition-colors font-medium">
+                <button 
+                  onClick={() => setIsVenueEnquiryModalOpen(true)}
+                  className="px-8 py-3 bg-viyat-gold hover:bg-white text-viyat-navy rounded-md transition-colors font-medium"
+                >
                   Enquire About Venues
                 </button>
-                <button className="px-8 py-3 border border-white hover:bg-white/10 rounded-md transition-colors font-medium">
+                <button 
+                  onClick={handleViewFloorPlans}
+                  className="px-8 py-3 border border-white hover:bg-white/10 rounded-md transition-colors font-medium"
+                >
                   View Floor Plans
                 </button>
               </div>
@@ -325,6 +354,18 @@ const Events = () => {
           setIsDetailsModalOpen(false);
           setIsRSVPModalOpen(true);
         }}
+      />
+
+      <VenueEnquiryModal
+        isOpen={isVenueEnquiryModalOpen}
+        onClose={() => setIsVenueEnquiryModalOpen(false)}
+        onSubmit={handleVenueEnquiry}
+        isLoading={isEnquirySubmitting}
+      />
+
+      <FloorPlansModal
+        isOpen={isFloorPlansModalOpen}
+        onClose={() => setIsFloorPlansModalOpen(false)}
       />
     </div>
   );
