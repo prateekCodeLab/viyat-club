@@ -1,13 +1,18 @@
+// src/pages/Membership.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '@components/PageHeader';
 import SectionHeader from '@components/SectionHeader';
 import CTAButton from '@components/CTAButton';
+import MembershipModal, { MembershipFormData } from '@components/MembershipModal';
 import { FaStar, FaSwimmingPool, FaSpa, FaDumbbell, FaGlassCheers, FaConciergeBell, FaUserTie } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
 
 const Membership = () => {
   const navigate = useNavigate();
-  const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const membershipTiers = [
     {
@@ -96,11 +101,27 @@ const Membership = () => {
   ];
 
   const handleJoinNow = (tierName: string) => {
-    setLoadingTier(tierName);
-    setTimeout(() => {
-      navigate('/signup', { state: { selectedTier: tierName } });
-      setLoadingTier(null);
-    }, 1000);
+    setSelectedTier(tierName);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmitMembership = async (formData: MembershipFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // In a real application, you would send this data to your backend
+      console.log('Membership application submitted:', formData);
+      
+      toast.success(`Thank you for your ${formData.tier} membership application! We will contact you shortly.`);
+      setIsModalOpen(false);
+      setSelectedTier(null);
+    } catch (error) {
+      toast.error('Failed to submit application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -151,14 +172,14 @@ const Membership = () => {
 
                   <button
                     onClick={() => handleJoinNow(tier.name)}
-                    disabled={!!loadingTier}
+                    disabled={isSubmitting}
                     className={`w-full py-3 rounded-lg font-medium transition-colors ${
                       tier.popular 
                         ? "bg-viyat-gold hover:bg-viyat-navy text-white" 
                         : "bg-white border-2 border-viyat-gold text-viyat-gold hover:bg-viyat-gold/10"
-                    } ${loadingTier ? "opacity-70 cursor-not-allowed" : ""}`}
+                    } ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
                   >
-                    {loadingTier === tier.name ? "Processing..." : "Join Now"}
+                    {isSubmitting && selectedTier === tier.name ? "Processing..." : "Join Now"}
                   </button>
                 </div>
               </div>
@@ -229,6 +250,18 @@ const Membership = () => {
           </div>
         </div>
       </section>
+
+      <MembershipModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedTier(null);
+        }}
+        selectedTier={selectedTier || ''}
+        onSubmit={handleSubmitMembership}
+        isLoading={isSubmitting}
+      />
+
     </div>
   );
 };
