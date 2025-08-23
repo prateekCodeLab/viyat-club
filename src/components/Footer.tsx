@@ -24,7 +24,7 @@ const Footer = () => {
     { name: "About Us", path: "/about" },
     { name: "Rooms & Suites", path: "/accommodation" },
     { name: "Dining", path: "/dining" },
-    { name: "Spa & Wellness", path: "/spa" },
+    { name: "Spa & Wellness", path: "/spa-wellness" },
     { name: "Events", path: "/events" },
     { name: "Gallery", path: "/gallery" }
   ];
@@ -89,14 +89,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-6">Stay Updated</h3>
             <NewsletterForm />
-            <div className="mt-6">
-              <CTAButton
-                text="Download Brochure"
-                to="/assets/brochure.pdf"
-                variant="gold-outline"
-                size="full"
-              />
-            </div>
+            {/* Download Brochure button removed from footer as requested */}
           </div>
         </div>
 
