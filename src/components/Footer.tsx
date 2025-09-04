@@ -15,8 +15,8 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: <FaMapMarkerAlt />, text: "123 Club Avenue, Mumbai 400001" },
-    { icon: <FaPhone />, text: "+91 22 1234 5678" },
+    { icon: <FaMapMarkerAlt />, text: "Suthiyana, Greater Noida, Habibpur, Uttar Pradesh, 201305" },
+    { icon: <FaPhone />, text: "+91 708 455 5589" },
     { icon: <FaEnvelope />, text: "info@viyatclub.com" }
   ];
 
